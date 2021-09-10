@@ -42,7 +42,7 @@ if __name__ == "__main__":
     # Get the target
     target = int(input("Enter data to find : "))
 
-    # Call linear search
+    # Call binary search
     result = binary_search(data, target)
 
     # Check if data was found
