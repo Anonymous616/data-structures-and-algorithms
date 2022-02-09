@@ -14,7 +14,7 @@ vector<int> generateRandomIntVectorSorted(int n) {
     vector<int> data(n, 0); // Initialize vector array
     srand(time(0)); // Use srand() for different outputs
     generate(data.begin(), data.end(), rand); // Generate value using generate
-    sort(data.begin(), data.end(), greater<int>()); // Sort vector
+    sort(data.begin(), data.end()); // Sort vector
     return data;
 }
 

@@ -4,23 +4,29 @@
 using namespace std;
 
 // Ternary Search Iterative
-int ternary(vector<int> data, int value) {
-    int beg = 0, end = data.size() - 1, mid1, mid2;
+int ternary(vector<int> data, int beg, int end, int value) {
 
-    while (beg <= end) {
-        mid1 = beg + (end -  beg) / 3; // Calculate Mid 1
-        mid2 = mid1 + (end - beg) / 3; // Calculate Mid 2
-        if (data[mid1] == value)
-            return mid1; // Element found
-        if (data[mid2] == value)
-            return mid2; // Element found
-        if (data[mid1] > value)
-            end = mid1 - 1; // Search in left sub
-        if (data[mid2] < value) {
-            beg = mid1 + 1; // Search in right sub
-            end = mid2 - 1;
-        }
-    }
+   if(beg <= end) {
+        int mid1 = beg + (end - beg) /3;
+        int mid2 = mid1 + (end - beg) /3;
+        cout << mid1 << " " << mid2 << endl;
+
+        if(data[mid1] == value)
+            return mid1; // Found
+
+        if(data[mid2] == value)
+            return mid2; // Found
+
+        // Check in left sub
+        if(data[mid1] > value)
+            return ternary(data, beg, mid1 - 1, value);
+
+        // Check in right sub
+        if(data[mid2] < value)
+            return ternary(data, mid2 + 1, end, value);
+
+        return ternary(data, mid1 + 1, mid2 - 1, value);
+   }
 
     return -1;
 }
@@ -32,19 +38,19 @@ void print(vector<int> data) {
 }
 
 int main() {
-    vector<int> data = generateRandomIntVector(10);
-    int value = data[rand() % 10];
+    vector<int> data = generateRandomIntVectorSorted(11);
+    int value = data[rand() % 11];
 
     cout << "Data: \n";
     print(data);
 
-    cout << "\n ==== Linear Search =====\nElement to find : " << value << endl;
+    cout << "\n ==== Ternary Search =====\nElement to find : " << value << endl;
 
-    int index = ternary(data, value);
+    int index = ternary(data, 0, data.size()-1, value);
     if (index == -1)
         cout << value << " not found" << endl;
     else
         cout << value << " found at " << index << endl;
 
-    checkSearchTime(&ternary, 1000, "Ternary Search", true);
+    /* checkSearchTime(&ternary, 1000, "Ternary Search", true); */
 }
