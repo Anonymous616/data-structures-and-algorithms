@@ -15,9 +15,9 @@ int ternary(vector<int> data, int value) {
         if (data[mid2] == value)
             return mid2; // Element found
         if (data[mid1] > value)
-            end = mid1 - 1; // Search in right sub
+            end = mid1 - 1; // Search in left sub
         if (data[mid2] < value) {
-            beg = mid1 + 1; // Search in left sub
+            beg = mid1 + 1; // Search in right sub
             end = mid2 - 1;
         }
     }

@@ -18,9 +18,9 @@ vector<int> generateRandomIntVectorSorted(int n) {
     return data;
 }
 
-void checkSearchTime(int (*func)(vector<int>, int), int iterations, string const search_name) {
+void checkSearchTime(int (*func)(vector<int>, int), int iterations, string const search_name, bool sorted) {
     int res, n = 100;
-    vector<int> data = generateRandomIntVectorSorted(n); // 100 Elements vector
+    vector<int> data = sorted ? generateRandomIntVectorSorted(n) : generateRandomIntVector(n) ; // 100 Elements vector
 
     int value;
 
