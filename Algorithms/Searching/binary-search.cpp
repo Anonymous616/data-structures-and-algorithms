@@ -11,7 +11,7 @@ int binary(vector<int> data, int value) {
         mid = (beg + end) / 2; // Calculate Mid
         if (data[mid] == value)
             return mid; // Element found
-        else if (data[mid] < value)
+        else if (data[mid] > value)
             end = mid - 1; // Search in right sub
         else
             beg = mid + 1; // Search in left sub
