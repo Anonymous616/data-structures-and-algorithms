@@ -4,7 +4,6 @@
 #include <random>
 #include <algorithm>
 #include <string>
-#include "generateRandom.cpp"
 
 using namespace std;
 
@@ -12,29 +11,32 @@ class process {
 public:
     string name;
     int arrival;
-    int og_burst;
     int burst;
+    int remaining_time;
     int completion = 0;
     int turnaround = 0;
     int waiting = 0;
 
     process(const string& name) {
+        int remaining_time;
         this->name = name;
         cout << "Enter arrival time : ";
         cin >> this->arrival;
-        cout << "Enter burst time : ";
-        cin >> this->burst;
+        cout << "Enter remaining_time time : ";
+        cin >> remaining_time;
+        this->remaining_time = remaining_time;
+        this->burst = remaining_time;
     }
 
-    process(const string& name, int arrival, int burst) {
+    process(const string& name, int arrival, int remaining_time) {
         this->name = name;
         this->arrival = arrival;
-        this->burst = burst;
-        this->og_burst = burst;
+        this->remaining_time = remaining_time;
+        this->burst = remaining_time;
     }
 
     void print() {
-        cout << name << "\n => Arrival Time : " << arrival << "\n => Burst Time : " << og_burst;
+        cout << name << "\n => Arrival Time : " << arrival << "\n => Burst Time : " << burst;
     }
 
     void printCompletion() {
@@ -51,12 +53,12 @@ public:
 
     /* Comparator used for sort according to arrival algorithm */
     bool static arrivalSortComparator(process p1, process p2) {
-        return (p1.arrival != p2.arrival) ? p1.arrival < p2.arrival : p1.burst < p2.burst;
+        return (p1.arrival != p2.arrival) ? p1.arrival < p2.arrival : p1.remaining_time < p2.remaining_time;
     }
 
-    /* Comparator used for sort according to burst algorithm */
-    bool static burstSortComparator(process p1, process p2) {
-        return (p1.burst != p2.burst) ? p1.burst < p2.burst : p1.arrival < p2.arrival;
+    /* Comparator used for sort according to remaining_time algorithm */
+    bool static remainingTimeSortComparator(process p1, process p2) {
+        return (p1.remaining_time != p2.remaining_time) ? p1.remaining_time < p2.remaining_time : p1.arrival < p2.arrival;
     }
 
     /* Sort according to Arrival */
@@ -69,17 +71,21 @@ public:
         sort(ps.begin() + start, ps.end() - end, process::arrivalSortComparator);
     }
 
-    /* Sort according to Burst */
+    /* Sort according to Remaining Time */
     void static sortBurst(vector<process>& ps) {
-        sort(ps.begin(), ps.end(), process::burstSortComparator);
+        sort(ps.begin(), ps.end(), process::remainingTimeSortComparator);
     }
 
-    /* Sort according to Burst */
+    /* Sort according to Remaining Time */
     void static sortBurst(vector<process>& ps, int start, int end) {
         /* cout << endl << start << " " << end; */
-        sort(ps.begin() + start, ps.end() - end, process::burstSortComparator);
+        sort(ps.begin() + start, ps.end() - end, process::remainingTimeSortComparator);
     }
 };
+
+int generateRandomInt(int min, int max) {
+    return  min + (rand() % static_cast<int>(max - min + 1));
+}
 
 /* Auto generate Processes */
 vector<process> sampleProcesses(int len) {
@@ -93,11 +99,11 @@ vector<process> sampleProcesses(int len) {
 }
 
 /* Pass arrival and Burst */
-vector<process> sampleProcesses(int arrival[], int burst[], int len) {
+vector<process> sampleProcesses(int arrival[], int remaining_time[], int len) {
     vector<process> v;
 
     for (int i = 0; i < len; i++)
-       v.push_back(process("P" + to_string(i), arrival[i], burst[i]));
+       v.push_back(process("P" + to_string(i), arrival[i], remaining_time[i]));
 
     return v;
 }
@@ -140,6 +146,18 @@ void printProcessesWithDetails(vector<process> v) {
     cout << endl;
 }
 
+double averageWaitingTime(vector<process> ps) {
+    double sum = 0;
+    for (process p : ps) sum += p.waiting;
+    return sum / ps.size();
+}
+
+double averageTurnaroundTime(vector<process> ps) {
+    double sum = 0;
+    for (process p : ps) sum += p.turnaround;
+    return sum / ps.size();
+}
+
 void srtf(vector<process> ps) {
     int pindex;
     int current = 0;
@@ -149,7 +167,7 @@ void srtf(vector<process> ps) {
     process::sortArrival(ps);
 
 
-    for (int clock = 0; ps.size() > 0 && clock < 100; clock++) {
+    for (int clock = 0; clock < 100000; clock++) {
         /* cout << clock << "\n"; */
         pindex = 0;
 
@@ -158,30 +176,34 @@ void srtf(vector<process> ps) {
             pindex++;
         }
 
-        /* Sort ready processes according to burst */
+        /* Sort ready processes according to remaining_time */
         process::sortBurst(ps, current, pindex);
 
-        if (ps[current].burst == 0) {
+
+        if (ps[current].remaining_time == 0) {
             ps[current].completion = clock; // Completion Time
             ps[current].turnaround = ps[current].completion - ps[current].arrival; // Turnaround Time
-            ps[current].waiting = ps[current].turnaround - ps[current].og_burst; // Waiting Time
+            ps[current].waiting = ps[current].turnaround - ps[current].burst; // Waiting Time
             current++;
-        } else {
-            ps[current].burst--;
         }
+        ps[current].remaining_time--;
 
-        if (ps[current].burst == 0 && pindex >= ps.size()) break;
+        if (ps[current].remaining_time == 0 && pindex >= ps.size()) break;
 
     }
 
     cout << "=== Result ===" << endl;
     printProcessesWithDetails(ps);
+
+    cout << "=== Stats ===" << endl;
+    cout << "Average Waiting Time = " << averageWaitingTime(ps) << endl;
+    cout << "Average Turnaround Time = " << averageTurnaroundTime(ps) << endl;
 }
 
 int main() {
 
-    vector<process> processes = sampleProcesses(5);
-    /* vector<process> processes = sampleProcesses(new int[]{0,1,2,3}, new int[]{8,4,9,5}, 4); */
+    /* vector<process> processes = sampleProcesses(5); */
+    vector<process> processes = sampleProcesses(new int[]{0,1,3}, new int[]{7,3,4}, 3);
     /* vector<process> processes = getProcesses(); */
 
     /* Print Processes */
