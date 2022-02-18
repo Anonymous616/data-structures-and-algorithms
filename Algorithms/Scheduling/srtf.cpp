@@ -4,6 +4,7 @@
 #include <random>
 #include <string>
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
@@ -98,11 +99,11 @@ vector<process> sampleProcesses(int len) {
 }
 
 /* Pass arrival and Burst */
-vector<process> sampleProcesses(int arrival[], int remaining[], int len) {
+vector<process> sampleProcesses(int arrival[], int burst[], int len) {
   vector<process> v;
 
   for (int i = 0; i < len; i++)
-    v.push_back(process("P" + to_string(i), arrival[i], remaining[i]));
+    v.push_back(process("P" + to_string(i), arrival[i], burst[i]));
 
   return v;
 }
@@ -183,9 +184,9 @@ void srtf(vector<process> ps) {
     if (ps[current].remaining == 0) {
       ps[current].completion = clock; // Completion Time
       ps[current].turnaround =
-          ps[current].completion - ps[current].arrival; // Turnaround Time
+          abs(ps[current].completion - ps[current].arrival); // Turnaround Time
       ps[current].waiting =
-          ps[current].turnaround - ps[current].burst; // Waiting Time
+          abs(ps[current].turnaround - ps[current].burst); // Waiting Time
       current++;
     }
     ps[current].remaining--;
@@ -205,7 +206,7 @@ void srtf(vector<process> ps) {
 int main() {
   vector<process> processes = sampleProcesses(5);
   /*  vector<process> processes =
-        sampleProcesses(new int[]{0, 1, 3}, new * int[]{7, 3, 4}, 3); */
+        sampleProcesses(new int[]{0, 1, 3}, new int[]{7, 3, 4}, 3); */
   /* vector<process> processes = getProcesses(); */
 
   /* Print Processes */
