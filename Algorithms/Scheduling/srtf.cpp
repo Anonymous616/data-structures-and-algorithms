@@ -46,13 +46,13 @@ public:
 
   void printWaiting() { cout << "\n => Waiting Time : " << waiting; }
 
-  /* Comparator used for sort according to arrival algorithm */
+  /* Comparator used for sort according to arrival */
   bool static arrivalSortComparator(process p1, process p2) {
     return (p1.arrival != p2.arrival) ? p1.arrival < p2.arrival
                                       : p1.remaining < p2.remaining;
   }
 
-  /* Comparator used for sort according to remaining algorithm */
+  /* Comparator used for sort according to remaining */
   bool static remainingTimeSortComparator(process p1, process p2) {
     return (p1.remaining != p2.remaining) ? p1.remaining < p2.remaining
                                           : p1.arrival < p2.arrival;
