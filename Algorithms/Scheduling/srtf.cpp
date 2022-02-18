@@ -171,6 +171,7 @@ void srtf(vector<process> ps) {
     /* cout << clock << "\n"; */
     pindex = 0;
 
+    /* Get avaialable processes according to clock and arrival time */
     while (clock <= ps[pindex].arrival && pindex < ps.size()) {
       /* cout << pindex; */
       pindex++;
@@ -206,7 +207,6 @@ int main() {
   /*  vector<process> processes =
         sampleProcesses(new int[]{0, 1, 3}, new * int[]{7, 3, 4}, 3); */
   /* vector<process> processes = getProcesses(); */
-
 
   /* Print Processes */
   printProcesses(processes);
