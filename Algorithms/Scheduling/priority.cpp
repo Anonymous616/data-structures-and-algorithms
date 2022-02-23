@@ -238,10 +238,10 @@ void priorityScheduling(vector<process> ps) {
 
 int main() {
 
-  vector<process> processes = sampleProcesses(5);
-  /* vector<process> processes =
+  /* vector<process> processes = sampleProcesses(5); */
+  vector<process> processes =
         sampleProcesses(new int[]{0, 2, 4, 4, 7}, new int[]{21, 3, 6, 2},
-                        new int[]{2, 1, 4, 3}, 4); */
+                        new int[]{2, 1, 4, 3}, 4);
   /* vector<process> processes = getProcesses(); */
 
   /* Print Processes */
