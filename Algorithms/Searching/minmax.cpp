@@ -1,4 +1,3 @@
-#include "testime.cpp"
 #include <iostream>
 #include <vector>
 
@@ -56,6 +55,4 @@ int main() {
 
   for (auto r : result)
     cout << " => " << r.first << " : " << r.second << endl;
-
-  /* checkSearchTime(&binary, 1000, "Binary Search", true); */
 }
