@@ -1,0 +1,76 @@
+Given an array representing stock price for n days, where each element represents the price of a stock on that day
+Find the number of pairs of days where the sum of stock price lies between given range
+
+example:
+n=4
+arr=[2, 3, 4, 5]
+l=5
+r=7
+
+Output: 4
+explaination:
+The pairs are
+	(arr[1] + arr[2]) = 5
+	(arr[1] + arr[3]) = 6
+	(arr[1] + arr[4]) = 7
+	(arr[2] + arr[3]) = 7
+
+
+Test Cases:
+n = 3
+arr = [6, 2, 3]
+l = 7
+r = 10
+Output: 2
+
+n = 2
+arr = [100, 100]
+l = 200
+r = 200
+Output: 1
+
+n = 1
+arr = [3]
+l = 1
+r = 7
+Output: 0
+
+n = 5
+arr = [2, 5, 5, 1, 3]
+l = 11
+r = 121
+Output: 0
+
+n = 7
+arr = [65, 43, 76, 23, 36, 84, 43]
+l = 150
+r = 500
+Output: 1
+
+Solution:
+def getNumPairs(arr, l, r):
+    arr.sort()
+    ans = 0
+    for i in range(len(arr)):
+        st = 0
+        end = i - 1
+        rend = -1
+        while st <= end:
+            mid = (st + end) // 2
+            if arr[mid] + arr[i] <= r:
+                rend = mid
+                st = mid + 1
+            else:
+                end = mid - 1
+        st = 0
+        end = i - 1
+        lend = -1
+        while st <= end:
+            mid = (st + end) // 2
+            if arr[mid] + arr[i] < l:
+                lend = mid
+                st = mid + 1
+            else:
+                end = mid - 1
+        ans += rend - lend
+    return ans
