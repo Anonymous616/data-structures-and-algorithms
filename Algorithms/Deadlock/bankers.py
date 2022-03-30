@@ -33,6 +33,9 @@ def bankersSkel(alloc, maxReq, totalRes=None, availRes=None):
     if availRes is None:
         # Available = Total Resources - Sum of each column in alloc
         avail = totalRes - np.sum(alloc, axis=0)
+        if np.any(avail < 0):
+            print("Insufficient resources to allocate to processes")
+            return
     elif totalRes is None:
         avail = availRes
     else:
@@ -91,6 +94,9 @@ def bankers(alloc, maxReq, totalRes=None, availRes=None):
     if availRes is None:
         # Available = Total Resources - Sum of each column in alloc
         avail = totalRes - np.sum(alloc, axis=0)
+        if np.any(avail < 0):
+            print("Insufficient resources to allocate to processes")
+            return
     elif totalRes is None:
         avail = availRes
     else:
@@ -135,9 +141,9 @@ def bankers(alloc, maxReq, totalRes=None, availRes=None):
                 safeState.append(f"P{i}")
 
                 # Provide process resources
-                prevAvail = avail
+                tempAvail = avail
                 avail = avail - need[i]
-                print(f"Available \t\t:{avail} - {need[i]} = {avail}")
+                print(f"Available \t\t:{tempAvail} - {need[i]} = {avail}")
 
                 # Print total resources taken
                 print(f"Total Resources of P{i} \t:{alloc[i]} + {need[i]} = {maxReq[i]}")
@@ -170,7 +176,41 @@ def bankers(alloc, maxReq, totalRes=None, availRes=None):
 
     printMatrix(avail)
 
+def inputMatrix(rows, cols):
+    if rows < 1 or cols < 1:
+        print("Invalid Matrix Size")
+        return
+
+    mat = np.empty((rows, cols), dtype=int)
+
+    if rows > 1:
+        for i in range(rows):
+            print(f" ==> P{i}")
+
+            for j in range(cols):
+                mat[i][j] = int(input(f"  -> R{j} : "))
+
+            print()
+    else:
+        mat = np.empty(cols, dtype=int)
+        for j in range(cols):
+            mat[j] = int(input(f"  -> R{j} : "))
+
+    return mat
+
 if __name__ == "__main__":
+
+    # numRes = int(input("Enter number of resources : "))
+    # numProcess = int(input("Enter number of processes : "))
+
+    # print("Enter Data for Allocation Matrix : ")
+    # allocationMatrix = inputMatrix(numProcess, numRes)
+
+    # print("Enter Data for Max Matrix : ")
+    # maxMatrix = inputMatrix(numProcess, numRes)
+
+    # print("Enter Data for Available Resources Vector : ")
+    # availResources = inputMatrix(1, numRes)
 
     allocationMatrix = np.array([
         [ 0, 0, 1, 2 ],
@@ -188,13 +228,14 @@ if __name__ == "__main__":
         [ 0, 6, 5, 6 ]
     ])
 
-    # totalResources = np.array([1, 5, 2, 0])
-    availResources = np.array([1, 5, 2, 0])
-
     # Prints each step in detail
+
+    # Example with total resources
+    # totalResources = np.array([28, 15, 13])
     # bankers(allocationMatrix, maxMatrix, totalRes=totalResources)
 
     # Example with available resources
+    availResources = np.array([1, 5, 2, 0])
     bankers(allocationMatrix, maxMatrix, availRes=availResources)
 
     # Prints final answer
