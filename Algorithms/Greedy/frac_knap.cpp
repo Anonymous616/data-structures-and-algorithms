@@ -16,7 +16,7 @@ class Knap {
         this->item = item;
         this->profit = profit;
         this->weight = weight;
-        this->ratio = profit / weight;
+        this->ratio = (float) profit / weight;
         this->print();
     }
 
