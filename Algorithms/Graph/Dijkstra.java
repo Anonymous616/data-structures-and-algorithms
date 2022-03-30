@@ -15,16 +15,12 @@ public class Dijkstra {
     int minDist(int dist[], boolean unvisited[]) {
         int minVal = Integer.MAX_VALUE, minNode = 0;
 
-        System.out.println("Searching for Min Node ...");
-
         for (int i = 0; i < graph.length; i++) {
             // Check if node was visited and
             // its distance is better than the minimum value
             if (!unvisited[i] && dist[i] <= minVal) {
                 minVal = dist[i];
                 minNode = i;
-                System.out.println("New Min Node : " + i +
-                        "\tDistance : " + minVal);
             }
         }
 
@@ -47,8 +43,6 @@ public class Dijkstra {
 
         for (int i = 0; i < graph.length; i++) {
 
-            System.out.println("==> Iteration " + i);
-
             int u = minDist(dist, unvisited);
 
             unvisited[u] = true;
@@ -67,8 +61,6 @@ public class Dijkstra {
                 if (dist[v] > dist[u] + graph[u][v]) {
                     parent[v] = u;
                     dist[v] = dist[u] + graph[u][v];
-                    System.out.println("New Distance Node : " + v +
-                            "\tCost : " + dist[v]);
                 }
             }
 
