@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Dijkstra {
 
     public int graph[][];
@@ -33,10 +35,8 @@ public class Dijkstra {
         boolean unvisited[] = new boolean[graph.length];
 
         // Initializing distance and unvisited
-        for (int i = 0; i < graph.length; i++) {
-            dist[i] = Integer.MAX_VALUE;
-            unvisited[i] = false;
-        }
+        Arrays.fill(unvisited, false);
+        Arrays.fill(dist, Integer.MAX_VALUE);
 
         dist[src] = 0;
         parent[src] = -1;
