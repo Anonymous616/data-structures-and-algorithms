@@ -23,7 +23,7 @@ vector<int> selectionSort(vector<int> data) {
   cout << "\nOriginal Data :\t";
   printVector(data);
 
-  for (int i = 0; i < n; i++) {
+  for (int i = 0; i < n - 1; i++) {
     least = i;
     for (int j = i + 1; j < n; j++)
       if (data[least] > data[j])
