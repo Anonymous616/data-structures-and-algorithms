@@ -58,9 +58,11 @@ int main() {
       {"6", {"8", "9"}},
   };
 
+  cout << "Depth First Search : ";
   depth_first_search("0");
   cout << endl;
 
+  cout << "Breadth First Search : ";
   breadth_first_search("0");
   cout << endl;
 
