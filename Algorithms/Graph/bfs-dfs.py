@@ -27,6 +27,9 @@ class Graph:
             # Remove vertex from queue, whose neighbour will be visited now
             v = q.pop(0)
 
+            if v not in self.graph.keys():
+                continue
+
             for w in self.graph[v]:
                 if w not in visited:
                     print(w, end=" ")
@@ -54,6 +57,9 @@ class Graph:
 
             print(v, end=" ")
 
+            if v not in self.graph.keys():
+                continue
+
             for w in self.graph[v]:
 
                 if w not in visited:
@@ -67,7 +73,6 @@ class Graph:
         print(node)
 
         if node not in self.graph.keys():
-            print(node, "does not exist")
             return
 
         for w in self.graph[node]:
@@ -99,12 +104,19 @@ if __name__ == '__main__':
     # g.addEdge(4, 2)
     # g.addEdge(4, 3)
 
+    # g.addEdge(0, 1)
+    # g.addEdge(0, 2)
+    # g.addEdge(1, 2)
+    # g.addEdge(2, 3)
+    # g.addEdge(3, 1)
+    # g.addEdge(3, 2)
+
     g.addEdge(0, 1)
-    g.addEdge(0, 2)
     g.addEdge(1, 2)
     g.addEdge(2, 3)
-    g.addEdge(3, 1)
-    g.addEdge(3, 2)
+    g.addEdge(2, 4)
+    g.addEdge(0, 5)
+    g.addEdge(5, 6)
 
     print("\nBreadth First Search")
     g.bfs(0)
