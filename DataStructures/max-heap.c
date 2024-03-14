@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdbool.h>
 
 // Heap is a complete binary tree. Any given node is
 // - Always greater than its children (MAX Heap)
@@ -13,9 +14,7 @@ void swap(int *a, int *b) {
 // Heap operations
 // - Heapify: Creating a heap data structure from a binary tree
 void heapify(int *heap, int size, int i) {
-  if (size == 1) {
-    return;
-  }
+  if (size == 1 || i > size) return;
 
   int largest = i;
   int left = 2 * i + 1;
@@ -35,39 +34,40 @@ void heapify(int *heap, int size, int i) {
   }
 }
 
-void print(int *heap, int size) {
-  for (int i = 0; i < size; i++) {
-    printf("%d ", heap[i]);
-  }
-  printf("\n");
-}
-
 void insert(int *heap, int *size, int num) {
-  if ((*size) == 0) {
-    heap[0] = num;
-    (*size)++;
-    return;
-  } 
-
   heap[(*size)++] = num;
-  for (int i = *size / 2 - 1; i >= 0; i--) {
+
+  if ((*size) == 1) return;
+
+  for (int i = (*size) / 2 - 1; i >= 0; i--)
     heapify(heap, *size, i);
-  }
 }
 
 void delete(int *heap, int *size, int num) {
   if (size == 0) return;
 
-  int i = 0;
+  bool found = false;
+  int i;
   for (i = 0; i < (*size); i++) {
-    if (heap[i] == num) break;
+    if (heap[i] == num) {
+      found = true;
+      break;
+    }
   }
+
+  if (!found) return;
 
   swap(&heap[i], &heap[--(*size)]);
 
-  for (int i = (*size) / 2 - 1; i >= 0; i--) {
+  for (int i = (*size) / 2 - 1; i >= 0; i--) 
     heapify(heap, *size, i);
-  }
+}
+
+void print(int *heap, int size) {
+  for (int i = 0; i < size; i++)
+    printf("%d ", heap[i]);
+
+  printf("\n");
 }
 
 int main() {
