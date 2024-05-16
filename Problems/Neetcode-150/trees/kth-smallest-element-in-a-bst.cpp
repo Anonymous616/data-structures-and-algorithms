@@ -2,25 +2,25 @@
 
 class Solution {
 public:
-  void dfs(TreeNode *node, int k, vector<int> &visited) {
+  void dfs(TreeNode *node, int &k, int &result) {
     if (node == NULL)
       return;
 
-    if (visited.size() >= k)
+    dfs(node->left, k, result);
+
+    if ((--k) == 0) {
+      result = node->val;
       return;
+    }
 
-    dfs(node->left, k, visited);
-
-    visited.push_back(node->val);
-
-    dfs(node->right, k, visited);
+    dfs(node->right, k, result);
   }
 
   int kthSmallest(TreeNode *root, int k) {
-    vector<int> smallest_values;
+    int result;
 
-    dfs(root, k, smallest_values);
+    dfs(root, k, result);
 
-    return smallest_values[k - 1];
+    return result;
   }
 };
